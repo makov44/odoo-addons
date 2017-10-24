@@ -1,9 +1,9 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
+    <!-- Host -->
 
-    <record model="ir.ui.view" id="audit_ssh_keys.list">
-      <field name="name">audit_ssh_keys list</field>
+    <record model="ir.ui.view" id="audit_ssh_keys.host_list">
+      <field name="name">audit_ssh_keys.host.list</field>
       <field name="model">audit_ssh_keys.host</field>
       <field name="arch" type="xml">
         <tree>
@@ -13,6 +13,107 @@
           <field name="users_nbr"/>
         </tree>
       </field>
+    </record>
+
+    <record model="ir.ui.view" id="audit_ssh_keys.host_form">
+            <field name="name">audit_ssh_keys.host.form</field>
+            <field name="model">audit_ssh_keys.host</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Hosts">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="environment"/>
+                            <field name="users_nbr"/>
+                        </group>
+                        <group>
+                            <field name="users_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+    </record>
+
+    <!-- User -->
+     <record model="ir.ui.view" id="audit_ssh_keys.user_list">
+      <field name="name">audit_ssh_keys.user.list</field>
+      <field name="model">audit_ssh_keys.user</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="description"/>
+          <field name="keys_nbr"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="audit_ssh_keys.user_form">
+            <field name="name">audit_ssh_keys.user.form</field>
+            <field name="model">audit_ssh_keys.user</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Users">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="description"/>
+                            <field name="keys_nbr"/>
+                        </group>
+                       <group>
+                         <field name="keys_ids"/>
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+    </record>
+
+    <!-- Keys -->
+     <record model="ir.ui.view" id="audit_ssh_keys.key_list">
+      <field name="name">audit_ssh_keys.key.list</field>
+      <field name="model">audit_ssh_keys.key</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="label"/>
+          <field name="key_type"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="audit_ssh_keys.key_form">
+            <field name="name">audit_ssh_keys.key.form</field>
+            <field name="model">audit_ssh_keys.key</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="SSH Keys">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="label" />
+                            <h1>
+                                <field name="label"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="key_type"/>
+                            <field name="key_hash"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
     </record>
 
 
