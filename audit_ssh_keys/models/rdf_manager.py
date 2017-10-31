@@ -66,7 +66,7 @@ class Query:
                          ns1:system_instance.id  ?userId .
                    FILTER(?id in %s)              
                }
-               GROUP BY ?id ?uri ?name
+               GROUP BY ?id ?name
                                             
                """
 
