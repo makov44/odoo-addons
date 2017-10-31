@@ -7,10 +7,9 @@
       <field name="model">audit_ssh_keys.host</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="host"/>
+          <field name="name"/>
           <field name="environment"/>
           <field name="description"/>
-          <field name="users_nbr"/>
         </tree>
       </field>
     </record>
@@ -23,15 +22,14 @@
                 <form string="Hosts">
                     <sheet>
                         <div class="oe_title">
-                            <label for="host" class="oe_edit_only"/>
+                            <label for="name" class="oe_edit_only"/>
                             <h1>
-                                <field name="host"/>
+                                <field name="name"/>
                             </h1>
                         </div>
                         <group>
                             <field name="description"/>
                             <field name="environment"/>
-                            <field name="users_nbr"/>
                         </group>
                         <group>
                             <field name="users_ids"/>
@@ -49,7 +47,7 @@
         <tree>
           <field name="name"/>
           <field name="description"/>
-          <field name="keys_nbr"/>
+          <button name="view" string="view" type="object"/>
         </tree>
       </field>
     </record>
@@ -69,7 +67,6 @@
                         </div>
                         <group>
                             <field name="description"/>
-                            <field name="keys_nbr"/>
                         </group>
                        <group>
                          <field name="keys_ids"/>
@@ -85,9 +82,10 @@
       <field name="model">audit_ssh_keys.key</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="label"/>
+          <field name="name"/>
           <field name="key_type"/>
           <field name="description"/>
+          <button name="view" string="view" type="object"/>
         </tree>
       </field>
     </record>
@@ -100,9 +98,9 @@
                 <form string="SSH Keys">
                     <sheet>
                         <div class="oe_title">
-                            <label for="label" />
+                            <label for="name" />
                             <h1>
-                                <field name="label"/>
+                                <field name="name"/>
                             </h1>
                         </div>
                         <group>
