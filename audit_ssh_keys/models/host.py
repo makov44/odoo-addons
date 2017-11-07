@@ -20,7 +20,7 @@ class Host(models.Model):
 
     @api.multi
     def read(self, fields=None, load='_classic_read'):
-        str_ids = '('+''.join([str(item)+',' for item in self.ids])+')'
+        str_ids = '(' + ''.join([str(item) + ',' for item in self.ids]) + ')'
         return RDF_STORE.execute(Query.get_host_users % (str.rstrip(str_ids, ',)') + ')'))
 
     @api.model
@@ -29,4 +29,4 @@ class Host(models.Model):
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=10000, order=None):
-        return RDF_STORE.execute(Query.get_hosts % (limit, offset))
+        return self.search(None, offset, limit, order)

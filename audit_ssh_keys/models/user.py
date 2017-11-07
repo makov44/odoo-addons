@@ -25,7 +25,7 @@ class User(models.Model):
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=10000, order=None):
-        return RDF_STORE.execute(Query.get_users % (limit, offset))
+        return self.search(None, offset, limit, order)
 
     @api.multi
     def view(self):

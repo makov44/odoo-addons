@@ -9,6 +9,7 @@ class Workstation(models.Model):
 
     name = fields.Char()
     description = fields.Text(string='Description')
+    person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
 
 
     # @api.multi

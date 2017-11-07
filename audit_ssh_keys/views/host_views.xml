@@ -1,11 +1,5 @@
 <odoo>
     <data>
-        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_host">
-            <field name="name">Hosts</field>
-            <field name="res_model">audit_ssh_keys.host</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
         <record model="ir.ui.view" id="audit_ssh_keys.host_list">
             <field name="name">audit_ssh_keys.host.list</field>
             <field name="model">audit_ssh_keys.host</field>
@@ -41,6 +35,11 @@
                     </sheet>
                 </form>
             </field>
+        </record>
+        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_host">
+            <field name="name">Hosts</field>
+            <field name="res_model">audit_ssh_keys.host</field>
+            <field name="view_mode">tree,form</field>
         </record>
     </data>
 </odoo>

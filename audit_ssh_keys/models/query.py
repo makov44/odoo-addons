@@ -111,3 +111,40 @@ class Key:
                 LIMIT %s
                 OFFSET %s
                 """
+
+
+class Person:
+    get_persons = """
+                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
+                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                SELECT DISTINCT ?id  ?first_name ?last_name ?title 
+                WHERE { 
+                ?personUri a foaf:Person;
+                         foaf:firstName ?first_name;
+                         foaf:lastName ?last_name;
+                         foaf:title ?title;
+                         ns1:system_instance.id  ?id .                         
+                          
+                }
+                ORDER BY (?id)
+                LIMIT %s
+                OFFSET %s
+                """
+
+    get_person_workstations = """
+                   PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
+                   SELECT DISTINCT ?id  ?first_name ?last_name ?title  (concat('[' , group_concat(distinct ?workstation_id; separator=','), ']') as ?workstation_ids_json)
+                   WHERE { 
+                      ?personUri a foaf:Person;
+                             foaf:firstName ?first_name;
+                             foaf:lastName ?last_name;
+                             foaf:title ?title;
+                             ns1:system_instance.id ?id .                        
+                      ?workstationUri a ns1:workstation;
+                             ns1:workstation.person ?personUri;
+                             ns1:system_instance.id  ?workstation_id .
+                      FILTER(?id in %s)              
+                   }
+                   GROUP BY ?id ?first_name ?last_name ?title 
+
+                   """
