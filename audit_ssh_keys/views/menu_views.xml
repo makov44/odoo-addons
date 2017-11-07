@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <!-- Top menu item -->
+
+    <menuitem name="Audit" id="audit_ssh_keys.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Hosts" id="audit_ssh_keys.menu_host" parent="audit_ssh_keys.menu_root"
+             action="audit_ssh_keys.action_window_host"/>
+
+    <menuitem name="Person" id="audit_ssh_keys.menu_person" parent="audit_ssh_keys.menu_root"
+             action="audit_ssh_keys.action_window_person"/>
+
+  </data>
+</odoo>

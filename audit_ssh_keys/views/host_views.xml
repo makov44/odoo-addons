@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_host">
+            <field name="name">Hosts</field>
+            <field name="res_model">audit_ssh_keys.host</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.ui.view" id="audit_ssh_keys.host_list">
+            <field name="name">audit_ssh_keys.host.list</field>
+            <field name="model">audit_ssh_keys.host</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="environment"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="audit_ssh_keys.host_form">
+            <field name="name">audit_ssh_keys.host.form</field>
+            <field name="model">audit_ssh_keys.host</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Hosts">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="description"/>
+                            <field name="environment"/>
+                        </group>
+                        <group>
+                            <field name="users_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

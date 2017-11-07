@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="audit_ssh_keys.key_list">
+            <field name="name">audit_ssh_keys.key.list</field>
+            <field name="model">audit_ssh_keys.key</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="key_type"/>
+                    <field name="description"/>
+                    <button name="view" string="view" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="audit_ssh_keys.key_form">
+            <field name="name">audit_ssh_keys.key.form</field>
+            <field name="model">audit_ssh_keys.key</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="SSH Keys">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="key_type"/>
+                            <field name="key_hash"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
