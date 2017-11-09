@@ -66,6 +66,23 @@ class RdfStore:
                        """ % (GRAPH_NAME, result)
         self.execute(query)
 
+    def update(self, _id, _object):
+        result = self.get_uri(_id)
+        if len(result) == 0:
+            return
+        uri = result[0]['uri']
+        if uri is None:
+            return
+        for key, value in _object.items():
+            graph = Graph()
+            graph.add((URIRef(uri), foaf[key], Literal("___object___")))
+            self.delete(graph)
+
+        graph = Graph()
+        for key, value in _object.items():
+            graph.add((URIRef(uri), foaf[key], Literal(value)))
+        self.insert(graph)
+
     def delete(self, graph):
         result = graph.serialize(format='nt').decode("utf-8")
         result = result.replace('\"___object___\"', '?object')
@@ -75,6 +92,17 @@ class RdfStore:
                      WHERE  { %s }                               
                      """ % (GRAPH_NAME, result, result)
         self.execute(query)
+
+    def delete_class(self, _id):
+        graph = Graph()
+        result = self.get_uri(_id)
+        if len(result) == 0:
+            return
+        uri = result[0]['uri']
+        if uri is None:
+            return
+        graph.add((URIRef(uri), Literal("___predicate___"), Literal("___object___")))
+        self.delete(graph)
 
     def get_uri(self, _id):
         query = """  PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>

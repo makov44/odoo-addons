@@ -29,29 +29,7 @@ class PersonDal:
         return _id
 
     def update(self, _id, person):
-        graph = Graph()
-        result = rdf_store.get_uri(_id)
-        if len(result) == 0:
-            return
-        uri = result[0]['uri']
-        if uri is None:
-            return
-        for key, value in person.items():
-            graph.add((URIRef(uri), foaf[key], Literal("___object___")))
-        rdf_store.delete(graph)
-        graph = Graph()
-
-        for key, value in person.items():
-            graph.add((URIRef(uri), foaf[key], Literal(value)))
-        rdf_store.insert(graph)
+        rdf_store.update(_id, person)
 
     def delete(self, _id):
-        graph = Graph()
-        result = rdf_store.get_uri(_id)
-        if len(result) == 0:
-            return
-        uri = result[0]['uri']
-        if uri is None:
-            return
-        graph.add((URIRef(uri), Literal("___predicate___"), Literal("___object___")))
-        rdf_store.delete(graph)
+        rdf_store.delete_class(_id)

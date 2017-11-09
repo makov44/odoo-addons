@@ -1,7 +1,7 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="audit_ssh_keys.host_list">
-            <field name="name">audit_ssh_keys.host.list</field>
+        <record model="ir.ui.view" id="audit_ssh_keys_host_tree">
+            <field name="name">audit_ssh_keys.host.tree</field>
             <field name="model">audit_ssh_keys.host</field>
             <field name="arch" type="xml">
                 <tree>
@@ -12,7 +12,7 @@
             </field>
         </record>
 
-        <record model="ir.ui.view" id="audit_ssh_keys.host_form">
+        <record model="ir.ui.view" id="audit_ssh_keys_host_form">
             <field name="name">audit_ssh_keys.host.form</field>
             <field name="model">audit_ssh_keys.host</field>
             <field name="priority">10</field>

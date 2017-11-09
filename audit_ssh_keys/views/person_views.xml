@@ -1,18 +1,18 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="audit_ssh_keys.host_list">
-          <field name="name">audit_ssh_keys.person.list</field>
-          <field name="model">audit_ssh_keys.person</field>
-          <field name="arch" type="xml">
-            <tree>
-                <field name="first_name"/>
-                <field name="last_name"/>
-                <field name="title"/>
-            </tree>
-          </field>
+        <record model="ir.ui.view" id="audit_ssh_keys_person_tree">
+            <field name="name">audit_ssh_keys.person.tree</field>
+            <field name="model">audit_ssh_keys.person</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="title"/>
+                </tree>
+            </field>
         </record>
 
-        <record model="ir.ui.view" id="audit_ssh_keys.person_form">
+        <record model="ir.ui.view" id="audit_ssh_keys_person_form">
             <field name="name">audit_ssh_keys.person.form</field>
             <field name="model">audit_ssh_keys.person</field>
             <field name="priority">10</field>
@@ -31,10 +31,12 @@
                 </form>
             </field>
         </record>
-         <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_person">
-          <field name="name">Persons</field>
-          <field name="res_model">audit_ssh_keys.person</field>
-          <field name="view_mode">tree,form</field>
+
+        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_person">
+            <field name="name">Persons</field>
+            <field name="res_model">audit_ssh_keys.person</field>
+            <field name="form_view_id" ref="audit_ssh_keys_person_form"/>
+            <field name="view_mode">tree,form</field>
         </record>
     </data>
 </odoo>

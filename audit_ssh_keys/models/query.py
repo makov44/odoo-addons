@@ -32,7 +32,7 @@ class Host:
 class User:
     get_user_keys = """
               PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-              SELECT DISTINCT ?id  ?name  ?host_id (concat('[' , group_concat(distinct ?key_id; separator=','), ']') as ?keys_ids_json)
+              SELECT ?id  ?name  ?host_id (concat('[' , group_concat(distinct ?key_id; separator=','), ']') as ?keys_ids_json)
               WHERE { 
                   ?hostUri a ns1:system_instance;
                        ns1:system_instance.id ?host_id .  
@@ -133,7 +133,7 @@ class Person:
     get_person_workstations = """
                    PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                   SELECT DISTINCT ?id  ?first_name ?last_name ?title  (concat('[' , group_concat(distinct ?workstation_id; separator=','), ']') as ?workstation_ids_json)
+                   SELECT ?id  ?first_name ?last_name ?title  (concat('[' , group_concat(distinct ?workstation_id; separator=','), ']') as ?workstation_ids_json)
                    WHERE { 
                       ?personUri a foaf:Person;
                              foaf:first_name ?first_name;
