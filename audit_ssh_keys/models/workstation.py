@@ -1,28 +1,29 @@
 from odoo import models, fields, api
 from . import rdf_manager
 from . import query
+from . import workstation_dal
 
 RDF_STORE = rdf_manager.RdfStore()
 Query = query.Workstation()
+_dal = workstation_dal.WorkstationDal()
 
 
 class Workstation(models.Model):
     _name = 'audit_ssh_keys.workstation'
 
     name = fields.Char()
-    description = fields.Text(string='Description')
     key_name = fields.Char(string='Ssh Key Label')
     key = fields.Text(string="Ssh Public Key")
-    person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
+    #person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
 
     @api.multi
     def read(self, fields=None, load='_classic_read'):
-        str_ids = '(' + ''.join([str(item) + ',' for item in self.ids]) + ')'
-        return RDF_STORE.execute(Query.get_workstation % (str.rstrip(str_ids, ',)') + ')'))
+        return _dal.select_by_ids(self.ids)
 
     @api.model
     def search(self, args, offset=0, limit=10000, order=None, count=False):
-        return RDF_STORE.execute(Query.get_workstations % (limit, offset))
+        active_id = self._context['active_id']
+        return _dal.select_all(active_id, offset, limit)
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=10000, order=None):
@@ -30,15 +31,17 @@ class Workstation(models.Model):
 
     @api.model
     def create(self, data):
-        res = super(Workstation, self).create(data)
-        return res
+        data['person_id'] = self._context['active_id']
+        _id = _dal.insert(data)
+        record = self.new(data)
+        record._ids = (_id,)
+        return record
 
     @api.multi
     def write(self, data):
-        res = super(Workstation, self).write(data)
-        return res
+        _dal.update(self.id, data)
+        return True
 
     @api.multi
     def unlink(self):
-        res = super(Workstation, self).unlink()
-        return res
+        _dal.delete(self.ids)

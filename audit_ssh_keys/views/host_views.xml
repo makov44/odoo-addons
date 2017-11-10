@@ -36,7 +36,7 @@
                 </form>
             </field>
         </record>
-        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_host">
+        <record model="ir.actions.act_window" id="audit_ssh_keys_action_window_host">
             <field name="name">Hosts</field>
             <field name="res_model">audit_ssh_keys.host</field>
             <field name="view_mode">tree,form</field>

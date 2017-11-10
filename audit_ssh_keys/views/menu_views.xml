@@ -7,10 +7,10 @@
     <!-- menu categories -->
 
     <menuitem name="Hosts" id="audit_ssh_keys.menu_host" parent="audit_ssh_keys.menu_root"
-             action="audit_ssh_keys.action_window_host"/>
+             action="audit_ssh_keys_action_window_host"/>
 
-    <menuitem name="Person" id="audit_ssh_keys.menu_person" parent="audit_ssh_keys.menu_root"
-             action="audit_ssh_keys.action_window_person"/>
+    <menuitem name="Persons" id="audit_ssh_keys.menu_person" parent="audit_ssh_keys.menu_root"
+             action="audit_ssh_keys_action_window_person"/>
 
   </data>
 </odoo>

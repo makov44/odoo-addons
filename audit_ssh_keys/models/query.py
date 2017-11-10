@@ -115,53 +115,47 @@ class Key:
 
 class Person:
     get_persons = """
-                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>             
                 SELECT ?id  ?first_name ?last_name ?title 
                 WHERE { 
-                ?personUri a foaf:Person;
-                         foaf:first_name ?first_name;
-                         foaf:last_name ?last_name;                        
-                         ns1:system_instance.id  ?id .                         
-                         OPTIONAL{?personUri foaf:title ?title . }   
+                      ?uri a ns1:person;
+                             ns1:first_name ?first_name;
+                             ns1:last_name ?last_name;                            
+                             ns1:id ?id .                        
+                      
+                      OPTIONAL {?uri ns1:title ?title . }  
                 }
                 ORDER BY (?id)
                 LIMIT %s
                 OFFSET %s
                 """
 
-    get_person_workstations = """
-                   PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                   PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                   SELECT ?id  ?first_name ?last_name ?title  (concat('[' , group_concat(distinct ?workstation_id; separator=','), ']') as ?workstation_ids_json)
+    get_persons_by_ids = """
+                   PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>                 
+                   SELECT ?id  (concat(?first_name , ' ',  ?last_name) as ?name) ?first_name ?last_name ?title 
                    WHERE { 
-                      ?personUri a foaf:Person;
-                             foaf:first_name ?first_name;
-                             foaf:last_name ?last_name;                            
-                             ns1:system_instance.id ?id .                        
+                      ?uri a ns1:person;
+                             ns1:first_name ?first_name;
+                             ns1:last_name ?last_name;                            
+                             ns1:id ?id .                        
                       
-                      OPTIONAL {?personUri foaf:title ?title . }  
-                      OPTIONAL {?workstationUri a ns1:workstation;
-                                 ns1:workstation.person ?personUri;
-                                 ns1:system_instance.id  ?workstation_id .}        
+                      OPTIONAL {?uri ns1:title ?title . }                    
                       FILTER(?id in %s)              
                    }
-                   GROUP BY ?id ?first_name ?last_name ?title 
-
                    """
 
 
 class Workstation:
     get_workstations = """
-                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>              
                 SELECT ?id  ?name ?key_name ?key
                 WHERE { 
-                    ?workstationUri a ns1:workstation;
-                             ns1:workstation.name  ?name;
-                             ns1:workstation.key_name ?key_name;
-                             ns1:workstation.key ?key;                    
-                             ns1:system_instance.id  ?id .                    
+                    ?uri a ns1:workstation;
+                             ns1:name  ?name;
+                             ns1:key_name ?key_name;
+                             ns1:key ?key;
+                             ns1:person_id %s;                   
+                             ns1:id  ?id .                    
 
                 }
                 ORDER BY (?id)
@@ -169,15 +163,15 @@ class Workstation:
                 OFFSET %s
                 """
 
-    get_workstation = """
+    get_workstations_by_ids = """
                    PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
                    SELECT ?id  ?name ?key_name ?key
                    WHERE { 
-                        ?workstationUri a ns1:workstation;
-                             ns1:workstation.name  ?name;
-                             ns1:workstation.key_name ?key_name;
-                             ns1:workstation.key ?key;                    
-                             ns1:system_instance.id  ?id .  
+                        ?uri a ns1:workstation;
+                             ns1:name  ?name;
+                             ns1:key_name ?key_name;
+                             ns1:key ?key;                    
+                             ns1:id  ?id .  
                       FILTER(?id in %s)              
                    }
                    """

@@ -74,13 +74,17 @@ class RdfStore:
         if uri is None:
             return
         for key, value in _object.items():
+            if not isinstance(value, str):
+                continue
             graph = Graph()
-            graph.add((URIRef(uri), foaf[key], Literal("___object___")))
+            graph.add((URIRef(uri), nsys[key], Literal("___object___")))
             self.delete(graph)
 
         graph = Graph()
         for key, value in _object.items():
-            graph.add((URIRef(uri), foaf[key], Literal(value)))
+            if not isinstance(value, str):
+                continue
+            graph.add((URIRef(uri), nsys[key], Literal(value)))
         self.insert(graph)
 
     def delete(self, graph):
@@ -93,54 +97,24 @@ class RdfStore:
                      """ % (GRAPH_NAME, result, result)
         self.execute(query)
 
-    def delete_class(self, _id):
-        graph = Graph()
-        result = self.get_uri(_id)
-        if len(result) == 0:
-            return
-        uri = result[0]['uri']
-        if uri is None:
-            return
-        graph.add((URIRef(uri), Literal("___predicate___"), Literal("___object___")))
-        self.delete(graph)
+    def delete_class(self, ids):
+        for _id in ids:
+            graph = Graph()
+            result = self.get_uri(_id)
+            if len(result) == 0:
+                continue
+            uri = result[0]['uri']
+            if uri is None:
+                continue
+            graph.add((URIRef(uri), Literal("___predicate___"), Literal("___object___")))
+            self.delete(graph)
 
     def get_uri(self, _id):
         query = """  PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
                      SELECT ?uri FROM %s
                      WHERE 
                      {
-                       ?uri ns1:system_instance.id %s . 
+                       ?uri ns1:id %s . 
                      }            
                      """ % (GRAPH_NAME, _id)
         return self.execute(query)
-
-    def build_workstation(self, person, workstation, graph):
-        person_uri = URIRef(str(dyl["person"]) + "/" + + person.first_name + "/" + person.last_name)
-        workstation_uri = URIRef(str(person_uri) + '/user/' + workstation.name)
-        hc.update(str(workstation_uri).encode('utf-8'))
-        _id = int(hc.hexdigest()[:8], 16)
-        graph.add((workstation_uri, RDF.type, nsys['workstation']))
-        graph.add((workstation_uri, nsys['workstation.name'], Literal(workstation.name)))
-        graph.add((workstation_uri, nsys['workstation.key_name'], Literal(workstation.key_name)))
-        graph.add((workstation_uri, nsys['workstation.key'], Literal(workstation.key)))
-        graph.add((workstation_uri, nsys['workstation.key'], Literal(workstation.key)))
-        graph.add((workstation_uri, nsys['system_instance.id'], Literal(_id)))
-        return _id
-
-        # def build_key(self, useruri, data, graph):
-        #     hc.update(data['public_key'].encode('utf-8'))
-        #     keyhash = hc.hexdigest()
-        #     keyuri = dyl['ssh_key/public_key_' + keyhash]
-        #     hc.update(str(keyuri).encode('utf-8'))
-        #     graph.add((keyuri, RDF.type, nsys['ssh_key']))
-        #     graph.add((keyuri, nsys['ssh_key.key_type'], Literal(data['type'])))
-        #     graph.add((keyuri, nsys['ssh_key.public_sha1'], Literal(keyhash)))
-        #     graph.add((keyuri, nsys['system_instance.id'], Literal(int(hc.hexdigest()[:8], 16))))
-        #     authuri = URIRef(str(useruri) + '/authorized_key/' + keyhash)
-        #     graph.add((authuri, RDF.type, nsys['authorized_key']))
-        #     graph.add((authuri, nsys['authorized_key.user'], useruri))
-        #     graph.add((authuri, nsys['authorized_key.ssh_key'], keyuri))
-        #     try:
-        #         graph.add((authuri, nsys['authorized_key.label'], Literal(data['label'])))
-        #     except KeyError:
-        #         pass

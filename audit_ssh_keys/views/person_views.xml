@@ -17,22 +17,30 @@
             <field name="model">audit_ssh_keys.person</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
-                <form string="Person">
+                <form string="Persons">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="action" icon="fa-user" class="oe_stat_button"
+                                    name="%(audit_ssh_keys.action_window_workstation)d">
+                                Workstations
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
                         <group>
                             <field name="first_name"/>
                             <field name="last_name"/>
                             <field name="title"/>
-                        </group>
-                        <group>
-                            <field name="workstation_ids"/>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="audit_ssh_keys.action_window_person">
+        <record model="ir.actions.act_window" id="audit_ssh_keys_action_window_person">
             <field name="name">Persons</field>
             <field name="res_model">audit_ssh_keys.person</field>
             <field name="form_view_id" ref="audit_ssh_keys_person_form"/>
