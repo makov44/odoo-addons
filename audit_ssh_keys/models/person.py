@@ -1,10 +1,7 @@
 from odoo import models, fields, api
 from . import person_dal
-from . import workstation
-from . import workstation_dal
 
 _dal = person_dal.PersonDal()
-_workstation_dal = workstation_dal.WorkstationDal()
 
 
 class Person(models.Model):
@@ -31,23 +28,13 @@ class Person(models.Model):
 
     @api.model
     def create(self, data):
+        _id = _dal.insert(data)
         record = self.new(data)
-        _id = _dal.insert(record)
         record._ids = (_id,)
         return record
 
     @api.multi
     def write(self, data):
-        # workstation_ids = []
-        # for key, value in data.items():
-        #     if isinstance(value, list):
-        #         for item in value:
-        #             for val in item:
-        #                 if isinstance(val, dict):
-        #                     val['person_id'] = self.id
-        #                     _id = _workstation_dal.insert(val)
-        #                     workstation_ids.append(_id)
-        # data["workstation_ids"] = workstation_ids
         _dal.update(self.id, data)
         return True
 

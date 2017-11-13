@@ -12,23 +12,23 @@ foaf = Namespace('http://xmlns.com/foaf/0.1/')
 
 hc = hashlib.sha1()
 _logger = logging.getLogger(__name__)
-_query = query.Workstation()
+_query = query.User()
 
 
-class WorkstationDal:
+class UserDal:
     def select_all(self, active_id, offset, limit):
-        return rdf_store.execute(_query.get_workstations % (active_id, limit, offset))
+        return rdf_store.execute(_query.get_users % (active_id, limit, offset))
 
     def select_by_ids(self, ids):
         str_ids = '(' + ''.join([str(item) + ',' for item in ids]) + ')'
-        return rdf_store.execute(_query.get_workstations_by_ids % (str.rstrip(str_ids, ',)') + ')'))
+        return rdf_store.execute(_query.get_users_by_ids % (str.rstrip(str_ids, ',)') + ')'))
 
     def insert(self, data):
         graph = Graph()
-        uri = URIRef(str(dyl["workstation"]) + "/" + data['name'])
+        uri = URIRef(str(dyl["user"]) + "/" + data['name'])
         hc.update(str(uri).encode('utf-8'))
         _id = int(hc.hexdigest()[:8], 16)
-        graph.add((uri, RDF.type, nsys['workstation']))
+        graph.add((uri, RDF.type, nsys['user']))
         graph.add((uri, nsys['id'], Literal(_id)))
         for key in data:
             if data[key]:

@@ -1,5 +1,5 @@
 import logging
-from rdflib import plugin, Graph, Literal, URIRef, Namespace
+from rdflib import Graph, Literal, URIRef, Namespace
 from rdflib.namespace import RDF
 import hashlib
 from . import rdf_manager
@@ -12,7 +12,7 @@ foaf = Namespace('http://xmlns.com/foaf/0.1/')
 
 hc = hashlib.sha1()
 _logger = logging.getLogger(__name__)
-_query = query.Person
+_query = query.Person()
 
 
 class PersonDal:
@@ -23,17 +23,16 @@ class PersonDal:
         str_ids = '(' + ''.join([str(item) + ',' for item in ids]) + ')'
         return rdf_store.execute(_query.get_persons_by_ids % (str.rstrip(str_ids, ',)') + ')'))
 
-    def insert(self, person):
+    def insert(self, data):
         graph = Graph()
-        person_uri = URIRef(str(dyl["person"]) + "/" + person.first_name + "/" + person.last_name)
+        person_uri = URIRef(str(dyl["person"]) + "/" + data["first_name"] + "/" + data["last_name"])
         hc.update(str(person_uri).encode('utf-8'))
         _id = int(hc.hexdigest()[:8], 16)
         graph.add((person_uri, RDF.type, nsys['person']))
-        graph.add((person_uri, nsys['first_name'], Literal(person.first_name)))
-        graph.add((person_uri, nsys['last_name'], Literal(person.last_name)))
         graph.add((person_uri, nsys['id'], Literal(_id)))
-        if person.title:
-            graph.add((person_uri, nsys['title'], Literal(person.title)))
+        for key in data:
+            if data[key]:
+                graph.add((person_uri, nsys[key], Literal(data[key])))
         rdf_store.insert(graph)
         return _id
 

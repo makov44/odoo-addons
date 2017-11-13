@@ -1,24 +1,29 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="audit_ssh_keys.user_list">
-            <field name="name">audit_ssh_keys.user.list</field>
+        <record model="ir.ui.view" id="user_tree">
+            <field name="name">audit_ssh_keys.user.tree</field>
             <field name="model">audit_ssh_keys.user</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
                     <field name="description"/>
-                    <button name="view" string="view" type="object"/>
                 </tree>
             </field>
         </record>
 
-        <record model="ir.ui.view" id="audit_ssh_keys.user_form">
+        <record model="ir.ui.view" id="user_form">
             <field name="name">audit_ssh_keys.user.form</field>
             <field name="model">audit_ssh_keys.user</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
                 <form string="Users">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="action" icon="fa-user" class="oe_stat_button"
+                                    name="%(audit_ssh_keys.action_window_key)d">
+                                Users
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1>
@@ -28,12 +33,15 @@
                         <group>
                             <field name="description"/>
                         </group>
-                        <group>
-                            <field name="keys_ids"/>
-                        </group>
                     </sheet>
                 </form>
             </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_window_user">
+            <field name="name">Users</field>
+            <field name="res_model">audit_ssh_keys.user</field>
+            <field name="form_view_id" ref="user_form"/>
+            <field name="view_mode">tree,form</field>
         </record>
     </data>
 </odoo>

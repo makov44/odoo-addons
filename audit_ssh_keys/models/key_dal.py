@@ -1,5 +1,5 @@
 import logging
-from rdflib import Graph, Literal, URIRef, Namespace
+from rdflib import Graph, Literal, URIRef, Namespace, XSD
 from rdflib.namespace import RDF
 import hashlib
 from . import rdf_manager
@@ -12,24 +12,24 @@ foaf = Namespace('http://xmlns.com/foaf/0.1/')
 
 hc = hashlib.sha1()
 _logger = logging.getLogger(__name__)
-_query = query.Workstation()
+_query = query.Key()
 
 
-class WorkstationDal:
+class KeyDal:
     def select_all(self, active_id, offset, limit):
-        return rdf_store.execute(_query.get_workstations % (active_id, limit, offset))
+        return rdf_store.execute(_query.get_keys % (active_id, limit, offset))
 
     def select_by_ids(self, ids):
         str_ids = '(' + ''.join([str(item) + ',' for item in ids]) + ')'
-        return rdf_store.execute(_query.get_workstations_by_ids % (str.rstrip(str_ids, ',)') + ')'))
+        return rdf_store.execute(_query.get_keys_by_ids % (str.rstrip(str_ids, ',)') + ')'))
 
     def insert(self, data):
         graph = Graph()
-        uri = URIRef(str(dyl["workstation"]) + "/" + data['name'])
+        uri = URIRef(str(dyl["key"]) + "/" + data['name'])
         hc.update(str(uri).encode('utf-8'))
-        _id = int(hc.hexdigest()[:8], 16)
-        graph.add((uri, RDF.type, nsys['workstation']))
-        graph.add((uri, nsys['id'], Literal(_id)))
+        _id = int(hc.hexdigest()[:16], 16)
+        graph.add((uri, RDF.type, nsys['key']))
+        graph.add((uri, nsys['id'], Literal(_id, datatype=XSD.unsignedLong)))
         for key in data:
             if data[key]:
                 graph.add((uri, nsys[key], Literal(data[key])))

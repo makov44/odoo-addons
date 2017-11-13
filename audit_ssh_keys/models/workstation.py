@@ -1,10 +1,6 @@
 from odoo import models, fields, api
-from . import rdf_manager
-from . import query
 from . import workstation_dal
 
-RDF_STORE = rdf_manager.RdfStore()
-Query = query.Workstation()
 _dal = workstation_dal.WorkstationDal()
 
 
@@ -14,7 +10,8 @@ class Workstation(models.Model):
     name = fields.Char()
     key_name = fields.Char(string='Ssh Key Label')
     key = fields.Text(string="Ssh Public Key")
-    #person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
+
+    # person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
 
     @api.multi
     def read(self, fields=None, load='_classic_read'):
@@ -31,7 +28,7 @@ class Workstation(models.Model):
 
     @api.model
     def create(self, data):
-        data['person_id'] = self._context['active_id']
+        data['active_id'] = self._context['active_id']
         _id = _dal.insert(data)
         record = self.new(data)
         record._ids = (_id,)

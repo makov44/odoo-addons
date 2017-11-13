@@ -8,12 +8,11 @@
                     <field name="name"/>
                     <field name="key_type"/>
                     <field name="description"/>
-                    <button name="view" string="view" type="object"/>
                 </tree>
             </field>
         </record>
 
-        <record model="ir.ui.view" id="audit_ssh_keys.key_form">
+        <record model="ir.ui.view" id="key_form">
             <field name="name">audit_ssh_keys.key.form</field>
             <field name="model">audit_ssh_keys.key</field>
             <field name="priority">10</field>
@@ -35,5 +34,11 @@
                 </form>
             </field>
         </record>
+       <record model="ir.actions.act_window" id="action_window_key">
+            <field name="name">Keys</field>
+            <field name="res_model">audit_ssh_keys.key</field>
+            <field name="form_view_id" ref="key_form"/>
+            <field name="view_mode">tree,form</field>
+       </record>
     </data>
 </odoo>

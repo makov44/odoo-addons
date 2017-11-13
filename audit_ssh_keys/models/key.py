@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from . import rdf_manager
-from . import query
+from . import key_dal
 
-RDF_STORE = rdf_manager.RdfStore()
-Query = query.Key()
+_dal = key_dal.KeyDal()
 
 
 class SshKey(models.Model):
@@ -15,29 +13,33 @@ class SshKey(models.Model):
     key_type = fields.Char(string='Type')
     key_hash = fields.Text()
     description = fields.Text(string='Description')
-    user_id = fields.Many2one('audit_ssh_keys.user', string="User")
 
     @api.multi
     def read(self, fields=None, load='_classic_read'):
-        str_ids = '(' + ''.join([str(item) + ',' for item in self.ids]) + ')'
-        return RDF_STORE.execute(Query.get_key % (str.rstrip(str_ids, ',)') + ')'))
+        return _dal.select_by_ids(self.ids)
 
     @api.model
     def search(self, args, offset=0, limit=10000, order=None, count=False):
-        return RDF_STORE.execute(Query.get_keys % (limit, offset))
+        active_id = self._context['active_id']
+        return _dal.select_all(active_id, offset, limit)
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=10000, order=None):
         return self.search(None, offset, limit, order)
 
+    @api.model
+    def create(self, data):
+        data['active_id'] = self._context['active_id']
+        _id = _dal.insert(data)
+        record = self.new(data)
+        record._ids = (_id,)
+        return record
+
     @api.multi
-    def view(self):
-        return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'audit_ssh_keys.key',
-            'res_id': self.id,
-            'type': 'ir.actions.act_window',
-            'target': 'current',
-            'flags': {'form': {'action_buttons': True}}
-        }
+    def write(self, data):
+        _dal.update(self.id, data)
+        return True
+
+    @api.multi
+    def unlink(self):
+        _dal.delete(self.ids)
