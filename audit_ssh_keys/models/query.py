@@ -1,7 +1,7 @@
 class Host:
     get_hosts = """
             PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-            SELECT ?id  ?name ?environment
+            SELECT ?id  ?name ?environment ?uri
             WHERE { 
             ?uri a ns1:host;
                      ns1:name ?name;
@@ -15,7 +15,7 @@ class Host:
 
     get_hosts_by_ids = """
                PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-               SELECT ?id  ?name ?environment
+               SELECT ?id  ?name ?environment ?uri
                WHERE { 
                 ?uri a ns1:host;
                          ns1:name ?name;
@@ -29,7 +29,7 @@ class Host:
 class User:
     get_users = """
               PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-              SELECT ?id  ?name  ?description
+              SELECT ?id  ?name  ?description ?uri
               WHERE { 
                   ?uri a ns1:user;              
                        ns1:id ?id;                    
@@ -44,7 +44,7 @@ class User:
 
     get_users_by_ids = """
               PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-              SELECT ?id  ?name  ?description
+              SELECT ?id  ?name  ?description ?uri
               WHERE { 
                   ?uri a ns1:user;              
                        ns1:id ?id;                    
@@ -58,7 +58,7 @@ class User:
 class Key:
     get_keys = """
                   PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                  SELECT ?id  ?name  ?key_type ?key_hash ?description
+                  SELECT ?id  ?name  ?key_type ?key_hash ?description ?uri
                   WHERE { 
                       ?uri a ns1:key;              
                            ns1:id ?id;                    
@@ -75,13 +75,13 @@ class Key:
 
     get_keys_by_ids = """
                   PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                  SELECT ?id  ?name  ?description
+                  SELECT ?id  ?name  ?description ? uri
                   WHERE { 
                        ?uri a ns1:key;              
                            ns1:id ?id;                    
                            ns1:name ?name;
                            ns1:key_type ?key_type;
-                           ns1:key_hash ?key_hash.                                               
+                           ns1:key_hash ?key_hash                                               
                       OPTIONAL {?uri ns1:description ?description . }
                       FILTER(?id in %s)                               
                   }
@@ -91,7 +91,7 @@ class Key:
 class Person:
     get_persons = """
                 PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>             
-                SELECT ?id  ?first_name ?last_name ?title 
+                SELECT ?id  ?first_name ?last_name ?title  ?uri
                 WHERE { 
                       ?uri a ns1:person;
                              ns1:first_name ?first_name;
@@ -107,7 +107,7 @@ class Person:
 
     get_persons_by_ids = """
                    PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>                 
-                   SELECT ?id  (concat(?first_name , ' ',  ?last_name) as ?name) ?first_name ?last_name ?title 
+                   SELECT ?id  (concat(?first_name , ' ',  ?last_name) as ?name) ?first_name ?last_name ?title  ?uri
                    WHERE { 
                       ?uri a ns1:person;
                              ns1:first_name ?first_name;
@@ -123,7 +123,7 @@ class Person:
 class Workstation:
     get_workstations = """
                 PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>              
-                SELECT ?id  ?name ?key_name ?key
+                SELECT ?id  ?name ?key_name ?key ?uri
                 WHERE { 
                     ?uri a ns1:workstation;
                              ns1:name  ?name;
@@ -139,7 +139,7 @@ class Workstation:
 
     get_workstations_by_ids = """
                    PREFIX ns1: <http://rdf.siliconbeach.io/schema/sys/v1/>
-                   SELECT ?id  ?name ?key_name ?key
+                   SELECT ?id  ?name ?key_name ?key ?uri
                    WHERE { 
                         ?uri a ns1:workstation;
                              ns1:name  ?name;

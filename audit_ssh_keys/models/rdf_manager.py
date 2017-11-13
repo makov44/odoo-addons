@@ -41,9 +41,6 @@ class RdfStore:
 
                     if key == 'id':
                         dict_result[key] = int(item[key]["value"])
-                    elif '_json' in key:
-                        new_key = re.sub('_json$', '', key)
-                        dict_result[new_key] = json.loads(item[key]["value"])
                     else:
                         dict_result[key] = item[key]["value"]
 

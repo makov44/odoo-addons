@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from . import user_dal
+from odoo.exceptions import ValidationError
 
 
 _dal = user_dal.UserDal()
@@ -26,6 +27,7 @@ class User(models.Model):
 
     @api.model
     def create(self, data):
+        self._check_name(data['name'])
         data['active_id'] = self._context['active_id']
         _id = _dal.insert(data)
         record = self.new(data)
@@ -40,3 +42,8 @@ class User(models.Model):
     @api.multi
     def unlink(self):
         _dal.delete(self.ids)
+
+    def _check_name(self, name):
+        if ' ' in name:
+            raise ValidationError('Error: \'Name\' can not contain spaces!')
+        return True

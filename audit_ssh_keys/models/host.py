@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from . import host_dal
+from odoo.exceptions import ValidationError
 
 _dal = host_dal.HostDal()
 
@@ -8,6 +9,7 @@ class Host(models.Model):
     _name = 'audit_ssh_keys.host'
 
     name = fields.Char(string='Host Name', required=True)
+    uri = fields.Char(string='Host Name', required=True)
     environment = fields.Char(string="Environment")
 
     @api.multi
@@ -24,6 +26,7 @@ class Host(models.Model):
 
     @api.model
     def create(self, data):
+        self._check_name(data["name"])
         record = self.new(data)
         _id = _dal.insert(data)
         record._ids = (_id,)
@@ -37,3 +40,8 @@ class Host(models.Model):
     @api.multi
     def unlink(self):
         _dal.delete(self.ids)
+
+    def _check_name(self, name):
+        if ' ' in name:
+            raise ValidationError('Error: \'Name\' can not contain spaces!')
+        return True

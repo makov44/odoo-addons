@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from . import workstation_dal
 
 _dal = workstation_dal.WorkstationDal()
@@ -10,8 +11,6 @@ class Workstation(models.Model):
     name = fields.Char()
     key_name = fields.Char(string='Ssh Key Label')
     key = fields.Text(string="Ssh Public Key")
-
-    # person_id = fields.Many2one("audit_ssh_keys.person", string="Person")
 
     @api.multi
     def read(self, fields=None, load='_classic_read'):
@@ -28,6 +27,7 @@ class Workstation(models.Model):
 
     @api.model
     def create(self, data):
+        self._check_name(data['name'])
         data['active_id'] = self._context['active_id']
         _id = _dal.insert(data)
         record = self.new(data)
@@ -42,3 +42,8 @@ class Workstation(models.Model):
     @api.multi
     def unlink(self):
         _dal.delete(self.ids)
+
+    def _check_name(self, name):
+        if ' ' in name:
+            raise ValidationError('Error: \'Name\' can not contain spaces!')
+        return True

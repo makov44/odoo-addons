@@ -4,15 +4,16 @@ from rdflib.namespace import RDF
 import hashlib
 from . import rdf_manager
 from . import query
+from .import helper
 
 rdf_store = rdf_manager.RdfStore()
 nsys = Namespace('http://rdf.siliconbeach.io/schema/sys/v1/')
 dyl = Namespace('http://rdf.dyl.com/data/env/staging/')
 foaf = Namespace('http://xmlns.com/foaf/0.1/')
 
-hc = hashlib.sha1()
 _logger = logging.getLogger(__name__)
 _query = query.Key()
+_user_query = query.User()
 
 
 class KeyDal:
@@ -24,10 +25,11 @@ class KeyDal:
         return rdf_store.execute(_query.get_keys_by_ids % (str.rstrip(str_ids, ',)') + ')'))
 
     def insert(self, data):
+        users = rdf_store.execute(_user_query.get_users_by_ids % ('(' + str(data['active_id']) + ')'))
+        user_name = any(users) and users[0] and users[0]['name']
         graph = Graph()
-        uri = URIRef(str(dyl["key"]) + "/" + data['name'])
-        hc.update(str(uri).encode('utf-8'))
-        _id = int(hc.hexdigest()[:16], 16)
+        uri = URIRef(str(dyl["key"]) + "/" + user_name + "/" + data['name'])
+        _id = helper.generate_id(uri)
         graph.add((uri, RDF.type, nsys['key']))
         graph.add((uri, nsys['id'], Literal(_id, datatype=XSD.unsignedLong)))
         for key in data:
