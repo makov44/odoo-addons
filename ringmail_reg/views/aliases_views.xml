@@ -1,0 +1,49 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="ringmail_reg_alias_tree">
+            <field name="name">ringmail_reg.alias.tree</field>
+            <field name="model">ringmail_reg.alias</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ringmail_reg_alias_form">
+            <field name="name">ringmail_reg.alias.form</field>
+            <field name="model">ringmail_reg.alias</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Secondary Emails">
+                    <header>
+                        <button string="Send confirmation email" type="object" name="send_confirmation_email"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                            </h1>
+                        </div>
+                        <div class="alert alert-success"
+                             attrs="{'invisible':[('state', '!=', 'sent')]}">
+                            <p class="alert alert-success" t-if="message">
+                                Verification email was sent
+                            </p>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="ringmail_reg_action_window_alias">
+            <field name="name">Secondary Emails</field>
+            <field name="res_model">ringmail_reg.alias</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+    <!-- Top menu item -->
+
+    <menuitem name="Registration" id="ringmail_reg_menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Domains" id="ringmail_reg_menu_domain" parent="ringmail_reg_menu_root"
+             action="ringmail_reg_action_window_domain"/>
+     <menuitem name="Secondary Emails" id="ringmail_reg_menu_aliases" parent="ringmail_reg_menu_root"
+             action="ringmail_reg_action_window_alias"/>
+  </data>
+</odoo>

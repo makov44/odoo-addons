@@ -1,0 +1,49 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="ringmail_reg_domain_tree">
+            <field name="name">ringmail_reg.domain.tree</field>
+            <field name="model">ringmail_reg.domain</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ringmail_reg_domain_form">
+            <field name="name">ringmail_reg.domain.form</field>
+            <field name="model">ringmail_reg.domain</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Domains">
+                    <header>
+                        <button string="Confirm" type="object" name="confirm_domain"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title" style="margin-left:8px">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                            </h1>
+                        </div>
+                        <div string="Verify Domain Name"
+                             attrs="{'invisible':['|',('state', '=', 'done'), ('name', '=', False)]}">
+                            <field name="instructions" widget="html" options="{'style-inline': true}"/>
+                             <div style="padding-left:25px"><field name="page" filename="page_fname" widget="binary"/></div>
+                             <field name="page_fname" invisible="1"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="ringmail_reg_action_window_domain">
+            <field name="name">Domains</field>
+            <field name="res_model">ringmail_reg.domain</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
